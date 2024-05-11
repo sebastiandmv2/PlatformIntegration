@@ -28,17 +28,22 @@
         </div>
     </nav>
 
-    <h1>Catálogo de Productos</h1>
-    <div>
+    <div class="row">
         {% for product in products %}
-        <div>
-            <h2>{{ product['name'] }}</h2>
-            <p>Precio: ${{ product['price'] }}</p>
-            <p>Descripción: {{ product['description'] }}</p>
-            <!-- Puedes agregar más campos según sea necesario -->
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{{ product['photo'] }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product['name'] }}</h5>
+                    <p class="card-text">{{ product['description'] }}</p>
+                    <p class="card-text">Precio: ${{ product['price'] }}</p>
+                </div>
+            </div>
         </div>
         {% endfor %}
     </div>
+    
+    
 
     <div class="container mt-4">
         {% block content %}{% endblock %}
