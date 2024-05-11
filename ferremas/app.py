@@ -22,8 +22,18 @@ def catalogo():
 
 @app.route('/carrito', methods=['GET'])
 def mostrar_carrito():
-    return render_template('carrito.html', products=carrito)
+    # Define la función calcular_total dentro de la ruta
+    def calcular_total(carrito):
+        total = 0
+        for product in carrito:
+            try:
+                total += float(product['price']) * int(product['quantity'])
+            except (ValueError, TypeError):
+                print("Error: Los valores de precio y cantidad deben ser números.")
+        return total
 
+    total = calcular_total(carrito)  # Llama a la función calcular_total y pasa el carrito como argumento
+    return render_template('carrito.html', products=carrito, total=total)
 
 
 @app.route('/add_to_cart', methods=['POST'])
@@ -43,7 +53,42 @@ def add_to_cart():
 
     return jsonify({'message': 'Producto agregado al carrito', 'product': cart_item})
 
-    
+
+#actualizar carrito
+
+@app.route('/update_quantity', methods=['POST'])
+def update_quantity():
+    # Obtén el ID del producto y la nueva cantidad desde la solicitud JSON
+    data = request.get_json()
+    product_id = data['productId']
+    new_quantity = data['quantity']
+
+    # Encuentra el producto en el carrito por su ID y actualiza la cantidad
+    for item in carrito:
+        if item['id'] == product_id:
+            item['quantity'] = new_quantity
+            break
+
+    # Devuelve una respuesta exitosa
+    return jsonify({'message': 'Cantidad del producto actualizada exitosamente en el carrito'})
+
+
+#eliminar producto
+@app.route('/remove_from_cart', methods=['POST'])
+def remove_from_cart():
+    # Obtener el ID del producto a eliminar del cuerpo de la solicitud
+    data = request.get_json()
+    product_id = data['productId']
+
+    # Iterar sobre los productos en el carrito y eliminar el que coincida con el ID proporcionado
+    for product in carrito:
+        if product['id'] == product_id:
+            carrito.remove(product)
+            return jsonify({'message': 'Producto eliminado del carrito', 'product': product})
+
+    # Si no se encuentra el producto en el carrito, devolver un mensaje de error
+    return jsonify({'error': 'Producto no encontrado en el carrito'}), 404
+
 # Ejecutar la aplicación Flask
 if __name__ == '__main__':
     # Ejecutar la aplicación Flask en modo de depuración en la dirección 0.0.0.0 y el puerto 8080
