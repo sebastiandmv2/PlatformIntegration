@@ -1,0 +1,35 @@
+/* Estilos para el navbar */
+.navbar {
+    background-color: #f8f9fa; /* Color de fondo del navbar */
+    border-bottom: 1px solid #e9ecef; /* Borde inferior */
+}
+
+.navbar-brand {
+    font-weight: bold; /* Texto en negrita */
+    color: #212529; /* Color del texto */
+}
+
+.navbar-nav .nav-link {
+    color: #212529; /* Color del texto de los enlaces */
+}
+
+/* Estilos para el contenido principal */
+.container {
+    padding-top: 20px; /* Espacio superior */
+    padding-bottom: 20px; /* Espacio inferior */
+}
+
+.card {
+    transition: transform 0.2s; /* Transición al pasar el cursor */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Efecto de levantar al pasar el cursor */
+}
+
+/* Estilos para el footer */
+.footer {
+    background-color: #f8f9fa; /* Color de fondo */
+    border-top: 1px solid #e9ecef; /* Borde superior */
+    color: #6c757d; /* Color del texto */
+}
