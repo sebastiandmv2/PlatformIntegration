@@ -12,10 +12,9 @@ function decrementQuantity(productId) {
     }
 }
 
-function addToCart(productId) {
+function addToCart(productId, priceClp, priceUsd) {
     const quantityInput = document.getElementById(`quantity_${productId}`);
     const quantity = parseInt(quantityInput.value) || 1; // Set default quantity to 1 if not provided
-    console.log('Producto ID:', productId, 'Cantidad:', quantity); // Add this line to print productId and quantity
 
     fetch('/add_to_cart', {
         method: 'POST',
@@ -30,10 +29,10 @@ function addToCart(productId) {
             throw new Error('Error al agregar el producto al carrito');
         }
     }).then(data => {
-        console.log('Producto agregado al carrito', data.product);
         // Show additional product details in the UI
         document.getElementById('productName').innerText = data.product.name;
-        document.getElementById('productPrice').innerText = `$${data.product.price}`;
+        document.getElementById('productPrice').innerText = `$${priceClp}`;
+        document.getElementById('price_usd').innerText = `$${priceUsd}`; // Show the price in USD
         document.getElementById('productQuantity').innerText = quantity;
         // Show the modal
         var modal = new bootstrap.Modal(document.getElementById('addToCartModal'));
