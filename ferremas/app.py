@@ -141,6 +141,64 @@ def register():
     # Si es un método GET, simplemente renderiza el formulario de registro
     return render_template('register.html')
 
+## Profile Routes
+
+# Ruta para ver el perfil del usuario
+@app.route('/profile/<username>', methods=['GET'])
+def user_profile(username):
+    # Realizar una solicitud a la API para obtener la información del usuario
+    response = requests.get(f'http://localhost:5000/api/profile?username={username}')
+
+    # Verificar si la solicitud fue exitosa
+    if response.status_code == 200:
+        user_info = response.json()
+        return render_template('profile.html', user=user_info)
+    else:
+        message = response.json().get('message', 'Error al obtener información del usuario')
+        return render_template('profile.html', message=message)
+
+@app.route('/edit_profile')
+def edit_user_profile():
+    message = request.args.get('message')
+    return render_template('edit_profile.html', message=message)
+
+# Ruta para modificar el correo electrónico del usuario en la API
+@app.route('/modify_email', methods=['POST'])
+def modify_email():
+    # Obtener los datos del formulario
+    username = session['username']
+    new_email = request.form['new_email']
+
+    # Realizar la solicitud a la API para modificar el correo electrónico
+    response = requests.put('http://localhost:5000/api/profile/email', json={'username': username, 'new_email': new_email})
+
+    # Capturar el mensaje de respuesta de la API
+    if response.status_code == 200:
+        message = response.json().get('message', 'Correo electrónico modificado exitosamente')
+    else:
+        message = response.json().get('message', 'Error al modificar el correo electrónico')
+    
+    # Redirigir a la página del perfil del usuario con el mensaje de la API
+    return redirect(url_for('edit_user_profile', message=message))
+
+# Ruta para modificar la contraseña del usuario en la API
+@app.route('/modify_password', methods=['POST'])
+def modify_password():
+    # Obtener los datos del formulario
+    username = session['username']
+    current_password = request.form['current_password']
+    new_password = request.form['new_password']
+    confirm_password = request.form['confirm_password']
+
+    # Realizar la solicitud a la API para modificar la contraseña
+    response = requests.put('http://localhost:5000/api/profile/password', json={'username': username, 'current_password': current_password, 'new_password': new_password, 'confirm_password': confirm_password})
+
+    if response.status_code == 200:
+        message = 'Contraseña modificada exitosamente'
+    else:
+        message = response.json()['message']
+    return redirect(url_for('edit_user_profile', message=message))
+ 
 # Ejecutar la aplicación Flask
 if __name__ == '__main__':
     # Ejecutar la aplicación Flask en modo de depuración en la dirección 0.0.0.0 y el puerto 8080

@@ -2,10 +2,12 @@
 
 {% block content %}
 
-<h2>Login</h2>
+<h2>Sign Up</h2>
     {% if message %}
         <p>{{ message }}</p>
     {% endif %}
+
+    <!-- Formulario para registro de usuario -->
     <h2>Registro de Usuario</h2>
     <form action="/register" method="POST">
         <label for="username">Nombre de Usuario:</label><br>

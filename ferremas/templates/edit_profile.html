@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Perfil del usuario</h1>
+
+    <!-- Formulario para modificar el correo electrónico -->
+    <h2>Modificar correo electrónico</h2>
+        <form action="/modify_email" method="post">
+            <label for="new_email">Nuevo correo electrónico:</label>
+            <input type="email" id="new_email" name="new_email" required><br><br>
+            <input type="submit" value="Actualizar correo electrónico">
+        </form>
+
+    <!-- Formulario para modificar la contraseña -->
+    <h2>Modificar contraseña</h2>
+        <form action="/modify_password" method="post">
+            <label for="current_password">Contraseña actual:</label>
+            <input type="password" id="current_password" name="current_password" required><br><br>
+            <label for="new_password">Nueva contraseña:</label>
+            <input type="password" id="new_password" name="new_password" required><br><br>
+            <label for="confirm_password">Confirmar nueva contraseña:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+            <input type="submit" value="Actualizar contraseña">
+        </form>
+    
+        <!-- Modal de Mensaje -->
+        <div id="message-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p id="message-text">xxx</p>
+            </div>
+        </div>
+
+    {% if message %}
+        <script>showModal("{{ message }}");</script>
+    {% endif %}
+
+{% endblock %}
