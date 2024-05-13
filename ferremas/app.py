@@ -1,6 +1,10 @@
 import requests
+import os
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask_mysqldb import MySQL
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, jsonify
+
 
 
 # Lista para almacenar los productos en el carrito
@@ -9,6 +13,9 @@ carrito = []
 # Inicialización de la aplicación Flask
 app = Flask(__name__)
 
+
+# Establece la clave secreta de la aplicación
+app.config['SECRET_KEY'] = os.urandom(32)
 
 def obtener_valor_dolar(usuario, contrasena, serie):
     # URL de la API
@@ -45,6 +52,7 @@ def obtener_valor_dolar(usuario, contrasena, serie):
     else:
         print("Error en la solicitud:", response.status_code)
         return None
+
 
 
 
@@ -152,8 +160,112 @@ def remove_from_cart():
     # Si no se encuentra el producto en el carrito, devolver un mensaje de error
     return jsonify({'error': 'Producto no encontrado en el carrito'}), 404
 
+## Login Routes
+
+# Función para manejar el login en la aplicación principal
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Hace una solicitud a la API para autenticar al usuario
+        response = requests.post('http://localhost:5000/api/login', json={'username': username, 'password': password})
+        
+        if response.status_code == 200:
+            # Genera la sesión del usuario si la autenticación es exitosa
+            session['username'] = username
+            return redirect(url_for('catalogo'))  # Redirecciona al usuario a la página principal
+        else:
+            return render_template('login.html', message='Invalid username or password')
+    return render_template('login.html')  # Renderiza el formulario de inicio de sesión
+
+@app.route('/logout')
+def logout():
+    # Elimina el nombre de usuario de la sesión si está presente
+    session.pop('username', None)
+    # Redirecciona al usuario a la página de inicio después de cerrar sesión
+    return redirect(url_for('catalogo'))
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        email = request.form['email']
+        
+        # Hacer una solicitud a la API para crear un nuevo usuario
+        response = requests.post('http://localhost:5000/api/register', json={'username': username, 'password': password, 'email': email})
+        
+        if response.status_code == 201:
+            # Si el usuario se crea con éxito, redirigir a la página de inicio de sesión
+            return redirect(url_for('login'))
+        else:
+            # Si hay un error al crear el usuario, mostrar un mensaje de error
+            return render_template('register.html', message='Error al registrar el usuario')
+
+    # Si es un método GET, simplemente renderiza el formulario de registro
+    return render_template('register.html')
+
+## Profile Routes
+
+# Ruta para ver el perfil del usuario
+@app.route('/profile/<username>', methods=['GET'])
+def user_profile(username):
+    # Realizar una solicitud a la API para obtener la información del usuario
+    response = requests.get(f'http://localhost:5000/api/profile?username={username}')
+
+    # Verificar si la solicitud fue exitosa
+    if response.status_code == 200:
+        user_info = response.json()
+        return render_template('profile.html', user=user_info)
+    else:
+        message = response.json().get('message', 'Error al obtener información del usuario')
+        return render_template('profile.html', message=message)
+
+@app.route('/edit_profile')
+def edit_user_profile():
+    message = request.args.get('message')
+    return render_template('edit_profile.html', message=message)
+
+# Ruta para modificar el correo electrónico del usuario en la API
+@app.route('/modify_email', methods=['POST'])
+def modify_email():
+    # Obtener los datos del formulario
+    username = session['username']
+    new_email = request.form['new_email']
+
+    # Realizar la solicitud a la API para modificar el correo electrónico
+    response = requests.put('http://localhost:5000/api/profile/email', json={'username': username, 'new_email': new_email})
+
+    # Capturar el mensaje de respuesta de la API
+    if response.status_code == 200:
+        message = response.json().get('message', 'Correo electrónico modificado exitosamente')
+    else:
+        message = response.json().get('message', 'Error al modificar el correo electrónico')
+    
+    # Redirigir a la página del perfil del usuario con el mensaje de la API
+    return redirect(url_for('edit_user_profile', message=message))
+
+# Ruta para modificar la contraseña del usuario en la API
+@app.route('/modify_password', methods=['POST'])
+def modify_password():
+    # Obtener los datos del formulario
+    username = session['username']
+    current_password = request.form['current_password']
+    new_password = request.form['new_password']
+    confirm_password = request.form['confirm_password']
+
+    # Realizar la solicitud a la API para modificar la contraseña
+    response = requests.put('http://localhost:5000/api/profile/password', json={'username': username, 'current_password': current_password, 'new_password': new_password, 'confirm_password': confirm_password})
+
+    if response.status_code == 200:
+        message = 'Contraseña modificada exitosamente'
+    else:
+        message = response.json()['message']
+    return redirect(url_for('edit_user_profile', message=message))
+ 
 # Ejecutar la aplicación Flask
 if __name__ == '__main__':
-    # Ejecutar la aplicación Flask en modo de depuración en la dirección 0.0.0.0 y el puerto 8080
     app.run(host='0.0.0.0', port=8080, debug=True)
 
