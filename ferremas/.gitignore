@@ -17,3 +17,7 @@ __pycache__/
 # Dependency directories
 lib/
 lib64/
+
+#PyCharm
+
+.idea/
