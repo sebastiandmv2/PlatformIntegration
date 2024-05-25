@@ -6,6 +6,10 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from utils import *
 
+import stripe
+
+# Configura tus claves de prueba de Stripe
+stripe.api_key = "sk_test_51PIEHJFngB2pMcgsTQQWyq4VWfSKzxgXHJHKjPGQiLehQyZ7EaPrHQqTBEFMjFpPcxn76UR5HRNeHwtAedsBDwKM00LGzeSh7D"
 
 
 # Lista para almacenar los productos en el carrito
@@ -14,9 +18,8 @@ carrito = []
 # Inicialización de la aplicación Flask
 app = Flask(__name__)
 
-
 # Establece la clave secreta de la aplicación
-app.config['SECRET_KEY'] = os.urandom(32)
+app.config['SECRET_KEY'] = 'a9a0f946b0e54dff85d1b7484c31b7d0'
 
 
 # Definición de las rutas
@@ -53,7 +56,7 @@ def mostrar_carrito():
     total_clp = calcular_total(carrito)  # Llama a la función calcular_total y pasa el carrito como argumento
     
     # Obtener el valor del dólar dentro de la función mostrar_carrito()
-    valor_dolar_ayer = obtener_valor_dolar("ast.gonzalez@duocuc.cl", "V25713451.2", "F073.TCO.PRE.Z.D")
+    valor_dolar_ayer = obtener_valor_dolar("ast.gonzalez@duocuc.cl", "V25713451.2")
 
     # Calcular price_usd para cada producto en el carrito
     for product in carrito:
@@ -63,6 +66,9 @@ def mostrar_carrito():
 
     # Calcular el total del carrito en USD
     total_usd = sum(product['price_usd'] * int(product['quantity']) for product in carrito)
+
+    # Agregar Variables a la sesion
+    session['total_clp'] = total_clp
 
     return render_template('carrito.html', products=carrito, total_clp=total_clp, total_usd=total_usd)
 
@@ -224,6 +230,48 @@ def modify_password():
     else:
         message = response.json()['message']
     return redirect(url_for('edit_user_profile', message=message))
+
+## PLATAFORMA DE PAGO
+
+@app.route('/success')
+def success():
+    session.pop('total_clp', None)
+    carrito.clear()  # Vaciar el carrito
+    return render_template('success.html')
+
+@app.route('/cancel')
+def cancel():
+    return render_template('cancel.html')
+
+
+@app.route('/create-checkout-session', methods=['POST'])
+def create_checkout_session():
+    try:
+        total_clp = session.get('total_clp', None)
+        if total_clp is not None:
+            total_clp = int(total_clp)  # Convertir a entero
+
+        user = session.get('username', None)
+
+        stripe_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'clp',
+                    'product_data': {
+                        'name': f'Carrito de {user}',
+                    },
+                    'unit_amount': total_clp,
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url='http://127.0.0.1:8080/success',
+            cancel_url='http://127.0.0.1:8080/cancel',
+        )
+        return jsonify({'id': stripe_session.id})
+    except Exception as e:
+        return jsonify(error=str(e)), 403
  
 # Ejecutar la aplicación Flask
 if __name__ == '__main__':
