@@ -22,11 +22,16 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a9a0f946b0e54dff85d1b7484c31b7d0'
 
 
-# Definición de las rutas
 @app.route('/', methods=['GET'])
 def catalogo():
+    tools_type_id = request.args.get('tools_type_id')
+    url = 'http://localhost:5000/tools'
+    
+    if tools_type_id:
+        url += f'?tools_type_id={tools_type_id}'
+    
     # Realizar una solicitud GET a la ruta de la API que devuelve los productos
-    response = requests.get('http://localhost:5000/tools')
+    response = requests.get(url)
 
     # Extraer los datos JSON de la respuesta
     products = response.json()
@@ -39,6 +44,15 @@ def catalogo():
 
     # Pasar los productos a la plantilla HTML y renderizarla
     return render_template('catalogo.html', products=products, valor_dolar=valor_dolar_ayer)
+
+##Mostrar las categorias
+
+@app.route('/categorias', methods=['GET'])
+def show_categorias():
+    response = requests.get('http://localhost:5000/tools_types')
+    tools_types = response.json()
+    return render_template('categorias.html', tools_types=tools_types)
+
 
 
 @app.route('/carrito', methods=['GET'])

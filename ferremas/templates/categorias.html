@@ -1,0 +1,24 @@
+<!-- templates/categorias.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Categorías de Herramientas - Ferremas
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4">Categorías de Herramientas</h1>
+    <div class="row">
+        {% for tool_type in tools_types %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ tool_type.des }}</h5>
+                        <a href="{{ url_for('catalogo', tools_type_id=tool_type.id) }}" class="btn btn-primary">Ver Productos</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
