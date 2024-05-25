@@ -37,14 +37,14 @@
                 <h5 class="card-title">Total a Pagar (CLP): ${{ "{:.2f}".format(total_clp) }}</h5>
                 <h5 class="card-title">Total a Pagar (USD): ${{ "{:.2f}".format(total_usd) }}</h5>
                              
-                <a href="#" class="btn btn-primary">Proceder al Pago</a>
+                <a id="checkout-button" class="btn btn-primary">Proceder al Pago</a>
             </div>
         </div>
     </div>
-    
-    
-</div>
 </div>
 
-
+<script>
+    console.log("Productos:", {{ products|tojson }});
+    console.log("Total CLP:", {{ total_clp }});
+</script>
 {% endblock %}
