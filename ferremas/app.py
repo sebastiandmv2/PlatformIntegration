@@ -140,6 +140,7 @@ def remove_from_cart():
     # Si no se encuentra el producto en el carrito, devolver un mensaje de error
     return jsonify({'error': 'Producto no encontrado en el carrito'}), 404
 
+
 ## Login Routes
 
 # Función para manejar el login en la aplicación principal

@@ -79,3 +79,41 @@ function removeFromCart(productId) {
     });
 }
 
+
+    function showHideBankDetails() {
+        var paymentMethod = document.getElementById("payment-method").value;
+        var bankDetails = document.getElementById("bank-details");
+        if (paymentMethod === "transferencia") {
+            bankDetails.style.display = "block";
+        } else {
+            bankDetails.style.display = "none";
+        }
+    }
+
+
+    function showHideShippingForm() {
+        var shippingMethod = document.getElementById("shipping-method").value;
+        var shippingForm = document.getElementById("shipping-form");
+
+        if (shippingMethod === "despacho") {
+            shippingForm.style.display = "block";
+        } else {
+            shippingForm.style.display = "none";
+        }
+    }
+
+    function showHidePaymentButton() {
+        var paymentMethod = document.getElementById("payment-method").value;
+        var checkoutButton = document.getElementById("checkout-button");
+    
+        if (paymentMethod === "tarjeta") {
+            checkoutButton.style.display = "block";
+        } else {
+            checkoutButton.style.display = "none";
+        }
+    }
+    
+    // Llamar a la función showHidePaymentButton al cargar la página
+    window.onload = function() {
+        showHidePaymentButton();
+    };
