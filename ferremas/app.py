@@ -233,10 +233,6 @@ def modify_password():
 
 ## PLATAFORMA DE PAGO
 
-@app.route('/test')
-def index():
-    return render_template('test.html')
-
 @app.route('/success')
 def success():
     session.pop('total_clp', None)
@@ -251,14 +247,11 @@ def cancel():
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
-        print("test2")
         total_clp = session.get('total_clp', None)
         if total_clp is not None:
             total_clp = int(total_clp)  # Convertir a entero
-        print(total_clp)
 
         user = session.get('username', None)
-        print(user)
 
         stripe_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
