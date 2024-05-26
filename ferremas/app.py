@@ -277,8 +277,28 @@ def modify_password():
 @app.route('/success')
 def success():
     session.pop('total_clp_con_descuento', None)
+    print(carrito)
+    for producto in carrito:
+        id_producto = producto['id']
+        quantity_producto = producto['quantity']
+
+        response = requests.put('http://localhost:5000/api/update_stock', json={'id': id_producto, 'new_stock': quantity_producto})
+
+        if response.status_code == 201:
+            message = response.json().get('message', 'Stock actualizado exitosamente')  # Obtener el mensaje si existe, de lo contrario, usar uno predeterminado
+        else:
+            message = 'Error al actualizar el stock del producto: {}'.format(response.text)  # Utilizar el contenido de la respuesta como mensaje de error
+
+            return redirect(url_for('error', message=message))
+
     carrito.clear()  # Vaciar el carrito
     return render_template('success.html')
+
+
+
+@app.route('/error')
+def error():
+    return render_template('error.html')
 
 @app.route('/cancel')
 def cancel():
