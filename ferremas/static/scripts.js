@@ -80,40 +80,36 @@ function removeFromCart(productId) {
 }
 
 
-    function showHideBankDetails() {
-        var paymentMethod = document.getElementById("payment-method").value;
-        var bankDetails = document.getElementById("bank-details");
-        if (paymentMethod === "transferencia") {
-            bankDetails.style.display = "block";
-        } else {
-            bankDetails.style.display = "none";
-        }
+function showHideShippingForm() {
+    var shippingForm = document.getElementById("shipping-form");
+    var shippingMethodDescription = document.getElementById("shipping-method").options[document.getElementById("shipping-method").selectedIndex].text;
+    if (shippingMethodDescription === "despacho") {
+        shippingForm.style.display = "block";
+    } else {
+        shippingForm.style.display = "none";
     }
+}
 
-
-    function showHideShippingForm() {
-        var shippingMethod = document.getElementById("shipping-method").value;
-        var shippingForm = document.getElementById("shipping-form");
-
-        if (shippingMethod === "despacho") {
-            shippingForm.style.display = "block";
-        } else {
-            shippingForm.style.display = "none";
-        }
+function showHidePaymentOptions() {
+    var bankdetails = document.getElementById("bank-details");
+    var checkoutButton = document.getElementById("checkout-button"); // Botón para pago con tarjeta
+    var proceedPaymentButton = document.getElementById("proceed-payment-button"); // Botón para transferencia
+    var paymentMethodDescription = document.getElementById("payment-method").options[document.getElementById("payment-method").selectedIndex].text;
+    if (paymentMethodDescription === "transferencia") {
+        bankdetails.style.display = "block";
+        checkoutButton.style.display = "none"; // Ocultar el botón para pago con tarjeta
+        proceedPaymentButton.style.display = "block"; // Mostrar el botón para transferencia
+    } else {
+        bankdetails.style.display = "none";
+        checkoutButton.style.display = "block"; // Mostrar el botón para pago con tarjeta
+        proceedPaymentButton.style.display = "none"; // Ocultar el botón para transferencia
     }
+}
+function proceedToSuccess() {
+    // Realizar cualquier acción adicional si es necesario
 
-    function showHidePaymentButton() {
-        var paymentMethod = document.getElementById("payment-method").value;
-        var checkoutButton = document.getElementById("checkout-button");
-    
-        if (paymentMethod === "tarjeta") {
-            checkoutButton.style.display = "block";
-        } else {
-            checkoutButton.style.display = "none";
-        }
-    }
-    
-    // Llamar a la función showHidePaymentButton al cargar la página
-    window.onload = function() {
-        showHidePaymentButton();
-    };
+    // Redirigir a la ruta success
+    window.location.href = "/success";
+}
+
+

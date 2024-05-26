@@ -22,6 +22,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a9a0f946b0e54dff85d1b7484c31b7d0'
 
 
+
 @app.route('/', methods=['GET'])
 def catalogo():
     tools_type_id = request.args.get('tools_type_id')
@@ -53,6 +54,22 @@ def show_categorias():
     tools_types = response.json()
     return render_template('categorias.html', tools_types=tools_types)
 
+# Función para obtener métodos de pago
+def obtener_metodos_pago():
+    response = requests.get('http://localhost:5000/api/pago')
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return []
+
+# Función para obtener métodos de envío
+def obtener_metodos_envio():
+    response = requests.get('http://localhost:5000/api/shipping')
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return []
+
 
 
 @app.route('/carrito', methods=['GET'])
@@ -68,6 +85,10 @@ def mostrar_carrito():
         return total
 
     total_clp = calcular_total(carrito)  # Llama a la función calcular_total y pasa el carrito como argumento
+    
+    # Obtener métodos de pago y envío
+    metodos_pago = obtener_metodos_pago()
+    metodos_envio = obtener_metodos_envio()    
     
     # Obtener el valor del dólar dentro de la función mostrar_carrito()
     valor_dolar_ayer = obtener_valor_dolar("ast.gonzalez@duocuc.cl", "V25713451.2")
@@ -111,7 +132,7 @@ def mostrar_carrito():
 
     return render_template('carrito.html', products=carrito, total_clp=total_clp, total_usd=total_usd,
                            total_clp_con_descuento=total_clp_con_descuento, total_usd_con_descuento=total_usd_con_descuento,
-                           subscribed=subscribed)
+                           subscribed=subscribed,payment_methods=metodos_pago, shipping_methods=metodos_envio)
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -276,8 +297,15 @@ def modify_password():
 
 @app.route('/success')
 def success():
-    session.pop('total_clp_con_descuento', None)
-    print(carrito)
+    total_clp_con_descuento = session.pop('total_clp_con_descuento', None)
+    if total_clp_con_descuento is None:
+        total_clp_con_descuento = sum([producto['subtotal'] for producto in carrito])
+        return redirect(url_for('error', message='No se encontró el total con descuento en la sesión'))
+
+    # Calcular el subtotal para cada producto en el carrito
+    for product in carrito:
+        product['subtotal'] = float(product['price']) * int(product['quantity'])
+
     for producto in carrito:
         id_producto = producto['id']
         quantity_producto = producto['quantity']
@@ -290,11 +318,34 @@ def success():
             message = 'Error al actualizar el stock del producto: {}'.format(response.text)  # Utilizar el contenido de la respuesta como mensaje de error
 
             return redirect(url_for('error', message=message))
+        
+        
+    # Obtener los métodos de envío y pago seleccionados del formulario en carrito.html
+    selectedShippingMethod = request.form.get('shipping-method')
+    selectedPaymentMethod = request.form.get('payment-method')
 
-    carrito.clear()  # Vaciar el carrito
-    return render_template('success.html')
 
+    # Crear la nueva orden
+    order_data = {
+        'id_users': session.get('user_id'),  # Suponiendo que guardas el ID de usuario en la sesión
+        'orders_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),  # Fecha y hora actual
+        'Total': total_clp_con_descuento,  # Total con descuento
+        'cantidad_productos': sum([producto['quantity'] for producto in carrito]),  # Cantidad total de productos en el carrito
+        'status': 'completado',  # Estado inicial de la orden
+        'id_shipping_detail': selectedShippingMethod,  # Método de envío seleccionado
+        'id_pago': selectedPaymentMethod,  # Método de pago seleccionado
+        'order_details': [{'id_tools': producto['id'], 'cantidad': producto['quantity'], 'subtotal': producto['subtotal']} for producto in carrito]  # Detalles de los productos en el carrito
+    }
 
+    response = requests.post('http://localhost:5000/api/orders', json=order_data)
+
+    if response.status_code == 201:
+        order_id = response.json().get('order_id')
+        carrito.clear()  # Vaciar el carrito solo si la orden se crea correctamente
+        return render_template('success.html', order_id=order_id)
+    else:
+        message = 'Error al crear la orden: {}'.format(response.text)
+        return redirect(url_for('error', message=message))
 
 @app.route('/error')
 def error():
