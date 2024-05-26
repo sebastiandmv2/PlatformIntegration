@@ -8,6 +8,12 @@
         <p><strong>ID:</strong> {{ user.id }}</p>
         <p><strong>Nombre de Usuario:</strong> {{ user.username }}</p>
         <p><strong>Correo Electrónico:</strong> {{ user.email }}</p>
+
+        {% if user.subscribed != 0 %}
+            <p><strong>Estado de Suscripción:</strong> Estás suscrito a nuestras ofertas</p>
+        {% else %}
+            <p><strong>Estado de Suscripción:</strong> No estás suscrito a nuestras ofertas</p>
+        {% endif %}
     </div>
 
     <a href="{{ url_for('edit_user_profile') }}">Editar Perfil</a>
