@@ -1,17 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <h1 class="text-center">Pago Exitoso</h1>
-        <hr>
-        <div class="card">
-            <div class="card-body text-center">
-                <h3 class="card-title">¡El pago se ha completado correctamente!</h3>
-                <p class="card-text">Gracias por su compra.</p>
-                <a href="/" class="btn btn-primary">Volver a la página principal</a>
-            </div>
-        </div>
-    </div>
+
+<div class="position-relative">
+    <img src="/static/Imagenes web/correcto.png" class="img-fluid mb-4" alt="Pago Correcto" style="width: 100%; margin-top: 100px;">
+    <a href="/web/correcto" class="btn btn-primary btn-m position-absolute start-50 translate-middle-x" style="bottom: 50px;">Volver a la página principal</a>
 </div>
+
 {% endblock %}

@@ -13,8 +13,9 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
+            <img src="/static/Imagenes web/isotipo.png" alt="Carrito" width="25" height="25" class="me-1">
             <a class="navbar-brand" href="#">Ferremas</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -32,17 +33,18 @@
                     </li>
                 </ul>
                 {% if 'username' in session %}
-                    <span class="navbar-text me-3">
+                    <span class="navbar-text">
                         Bienvenido, {{ session['username'] }}!
                     </span>
-                    <a class="nav-link ms-2" href="/logout">Cerrar sesión</a>
-                    <a class="nav-link ms-2" href="{{ url_for('user_profile', username=session['username']) }}">Perfil</a>
+                    <a class="nav-link ms-2" href="/logout">Cerrar sesión</a> <!-- Agregué la clase "ms-2" para darle un margen a la izquierda -->
+                    <a class="nav-link ms-2" href="{{ url_for('user_profile', username=session['username']) }}">Perfil</a> <!-- También agregué "ms-2" aquí -->
                 {% else %}
-                    <a class="nav-link ms-2" href="/login">Iniciar sesión</a>
+                    <a class="nav-link ms-2" href="/login">Iniciar sesión</a> <!-- Agregué la clase "ms-2" aquí -->
                 {% endif %}
-                <a class="nav-link ms-1" href="/carrito">
-                    <img src="/static/Imagenes web/carrito.png" alt="Carrito" width="25" height="25">
+                <a class="nav-link ms-2" href="/carrito">
+                    <img src="/static/Imagenes web/carrito.png" alt="Carrito" width="25" height="25" class="me-1">
                 </a>
+                
             </div>
         </div>
     </nav>

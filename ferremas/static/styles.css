@@ -20,7 +20,7 @@
 }
 
 .card {
-    transition: transform 0.2s; /* Transición al pasar el cursor */
+    transition: transform 0.5s; /* Transición al pasar el cursor */
 }
 
 .card:hover {
@@ -32,4 +32,46 @@
     background-color: #f8f9fa; /* Color de fondo */
     border-top: 1px solid #e9ecef; /* Borde superior */
     color: #6c757d; /* Color del texto */
+}
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100px; /* Adjust the width as needed */
+    margin-right: 20px; /* Adjust the margin as needed */
+}
+.img-fluid {
+    max-width: 150%;
+    height: auto;
+}
+
+.me-3 {
+    margin-right: 2%; /* Espaciado entre la imagen y la tarjeta */
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+/* Añadir estilos para la imagen */
+.image-container {
+    margin-right: 20px; /* Ajustar el margen derecho para separar la imagen del contenido */
+}
+
+
+.login-card {
+    margin-top: 10%;
+}
+
+.img-fluid-1 {
+    max-width: 50%;
+    height: auto;
 }
