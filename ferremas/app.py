@@ -81,11 +81,30 @@ def mostrar_carrito():
     # Calcular el total del carrito en USD
     total_usd = sum(product['price_usd'] * int(product['quantity']) for product in carrito)
 
+    # Verificar si hay un usuario en la sesión
+    if 'username' in session:
+        username = session['username']
+        # Traer informacion de Subcripción del Usuario
+        subscribed = requests.get(f'http://localhost:5000/api/profile?username={username}')
+        subscribed = subscribed.json().get('subscribed', False)  # Asegúrate de manejar la respuesta correctamente
+    else:
+        username = None
+        subscribed = False  # Manejar el caso donde no hay usuario
+
+    # Calcular los precios con descuento si el usuario está suscrito
+    if subscribed:
+        total_clp_con_descuento = total_clp * 0.9
+        total_usd_con_descuento = total_usd * 0.9
+    else:
+        total_clp_con_descuento = total_clp
+        total_usd_con_descuento = total_usd
+    
     # Agregar Variables a la sesion
-    session['total_clp'] = total_clp
+    session['total_clp_con_descuento'] = total_clp_con_descuento
 
-    return render_template('carrito.html', products=carrito, total_clp=total_clp, total_usd=total_usd)
-
+    return render_template('carrito.html', products=carrito, total_clp=total_clp, total_usd=total_usd,
+                           total_clp_con_descuento=total_clp_con_descuento, total_usd_con_descuento=total_usd_con_descuento,
+                           subscribed=subscribed)
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
@@ -250,7 +269,7 @@ def modify_password():
 
 @app.route('/success')
 def success():
-    session.pop('total_clp', None)
+    session.pop('total_clp_con_descuento', None)
     carrito.clear()  # Vaciar el carrito
     return render_template('success.html')
 
@@ -262,9 +281,9 @@ def cancel():
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
-        total_clp = session.get('total_clp', None)
-        if total_clp is not None:
-            total_clp = int(total_clp)  # Convertir a entero
+        total_payment = session.get('total_clp_con_descuento', None)
+        if total_payment is not None:
+            total_payment = int(total_payment)  # Convertir a entero
 
         user = session.get('username', None)
 
@@ -276,7 +295,7 @@ def create_checkout_session():
                     'product_data': {
                         'name': f'Carrito de {user}',
                     },
-                    'unit_amount': total_clp,
+                    'unit_amount': total_payment,
                 },
                 'quantity': 1,
             }],

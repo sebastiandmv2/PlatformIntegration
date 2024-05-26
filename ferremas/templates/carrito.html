@@ -5,9 +5,16 @@
 <!-- Mensaje de suscripción y botones de inicio de sesión y registro -->
 <div class="row">
     <div class="col-md-12 text-center">
-        <p>Suscríbete y obtén un 10% en tu compra</p>
-        <a href="/login" class="btn btn-primary">Iniciar sesión</a>
-        <a href="/register" class="btn btn-secondary">Registrarse</a>
+        {% if 'username' not in session %}
+            <p>Inicia sesión y suscríbete para aprovechar nuestras ofertas</p>
+            <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+            <a href="/register" class="btn btn-secondary">Registrarse</a>
+        {% elif 'username' in session and not subscribed %}
+            <p>Suscríbete para recibir nuestras ofertas</p>
+            <a href="/subscribe" class="btn btn-secondary">Suscribirse</a>
+        {% else %}
+            <p>Gracias por ser un suscriptor. ¡Disfruta de nuestras ofertas!</p>
+        {% endif %}
     </div>
 </div>
 
@@ -44,8 +51,13 @@
         <h3>Resumen del Pedido:</h3>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Total a Pagar (CLP): ${{ "{:.2f}".format(total_clp) }}</h5>
-                <h5 class="card-title">Total a Pagar (USD): ${{ "{:.2f}".format(total_usd) }}</h5>
+                {% if subscribed %}
+                    <h5 class="card-title">Total a Pagar (CLP): <s>${{ "{:.2f}".format(total_clp) }}</s> ${{ "{:.2f}".format(total_clp_con_descuento) }}</h5>
+                    <h5 class="card-title">Total a Pagar (USD): <s>${{ "{:.2f}".format(total_usd) }}</s> ${{ "{:.2f}".format(total_usd_con_descuento) }}</h5>
+                {% else %}
+                    <h5 class="card-title">Total a Pagar (CLP): ${{ "{:.2f}".format(total_clp) }}</h5>
+                    <h5 class="card-title">Total a Pagar (USD): ${{ "{:.2f}".format(total_usd) }}</h5>
+                {% endif %}
                 {% if 'username' in session %}
                     {% if total_clp > 0 %}
                         <!-- Selección de método de envío -->
