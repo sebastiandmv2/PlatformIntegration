@@ -1,6 +1,6 @@
 /* Estilos para el navbar */
 .navbar {
-    background-color: #f8f9fa; /* Color de fondo del navbar */
+    background-color: #f8fafa; /* Color de fondo del navbar */
     border-bottom: 1px solid #e9ecef; /* Borde inferior */
 }
 
@@ -75,3 +75,4 @@
     max-width: 50%;
     height: auto;
 }
+
