@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Pago Cancelado</title>
-</head>
-<body>
-    <h1>Pago Cancelado</h1>
-    <p>El proceso de pago ha sido cancelado.</p>
-    <a href="/carrito">Volver al Carrito</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Pago Cancelado</h1>
+<hr>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body text-center">
+                <h3 class="card-title">El proceso de pago ha sido cancelado.</h3>
+                <p class="card-text">Por favor, inténtelo de nuevo más tarde.</p>
+                <a href="/carrito" class="btn btn-primary">Volver al Carrito</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
