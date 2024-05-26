@@ -85,8 +85,15 @@ def mostrar_carrito():
     if 'username' in session:
         username = session['username']
         # Traer informacion de Subcripción del Usuario
-        subscribed = requests.get(f'http://localhost:5000/api/profile?username={username}')
-        subscribed = subscribed.json().get('subscribed', False)  # Asegúrate de manejar la respuesta correctamente
+        response = requests.get(f'http://localhost:5000/api/profile?username={username}')
+        if response.status_code == 200:
+            # La solicitud fue exitosa, obtenemos el estado de suscripción del usuario
+            user_info = response.json()
+            subscribed_value = user_info.get('subscribed')
+            subscribed = True if subscribed_value == 1 else False
+        else:
+        # Si la solicitud no fue exitosa, asignamos False a subscribed
+            subscribed = False
     else:
         username = None
         subscribed = False  # Manejar el caso donde no hay usuario
@@ -306,6 +313,25 @@ def create_checkout_session():
         return jsonify({'id': stripe_session.id})
     except Exception as e:
         return jsonify(error=str(e)), 403
+
+## SUSCRIPCIONES
+
+@app.route('/suscripcion_exitosa')
+def suscripcion_exitosa():
+    if 'username' not in session:
+        return render_template('cancel.html', message='No estás autenticado'), 401
+
+    username = session['username']
+    response = requests.post('http://localhost:5000/api/subscribe', json={'username': username})
+    subscription_successful = False
+
+    if response.status_code == 200:
+        message = 'Suscripción actualizada correctamente'
+        subscription_successful = True
+    else:
+        message = response.json().get('message', 'Error en la suscripción')
+        subscription_successful = False
+    return render_template('suscripcion_exitosa.html', message=message, subscription_successful=subscription_successful)
  
 # Ejecutar la aplicación Flask
 if __name__ == '__main__':
