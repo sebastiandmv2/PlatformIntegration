@@ -62,11 +62,13 @@
                     {% if total_clp > 0 %}
                         <!-- Selección de método de envío -->
                         <h5 class="card-title">Seleccione método de envío:</h5>
-                        <select class="form-select mb-3" id="shipping-method" onchange="showHideShippingForm()">
+                        <select class="form-select mb-3" id="shipping-method" name="shipping-method" onchange="showHideShippingForm()">
                             <option value="" selected>Seleccione método de envío</option>
-                            <option value="tienda">Retiro en Tienda</option>
-                            <option value="despacho">Despacho a Domicilio</option>
+                            {% for method in shipping_methods %}
+                            <option value="{{ method['id'] }}">{{ method['descripcion'] }}</option>
+                            {% endfor %}
                         </select>
+                        
         
                         <!-- Formulario para datos de envío -->
                         <div id="shipping-form" style="display: none;">
@@ -91,10 +93,11 @@
                                     
                         <!-- Selección del método de pago -->
                         <h5 class="card-title">Seleccione un método de pago:</h5>
-                        <select class="form-select mb-3" id="payment-method" onchange="showHidePaymentButton(); showHideBankDetails()">
+                        <select class="form-select mb-3" id="payment-method" name="payment-method" onchange="showHidePaymentOptions()">
                             <option value="" selected>Seleccione tipo de pago</option>
-                            <option value="tarjeta">Tarjeta de Crédito/Débito</option>
-                            <option value="transferencia">Transferencia Bancaria</option>
+                            {% for method in payment_methods %}
+                            <option value="{{ method['id'] }}">{{ method['descripcion'] }}</option>
+                            {% endfor %}
                         </select>
 
                         <!-- Botón para proceder al pago -->
@@ -106,9 +109,11 @@
                             <p>Nombre del Banco: Banco Ejemplo</p>
                             <p>Número de Cuenta: 1234567890</p>
                             <p>RUT: 12345678-9</p>
-                            <!-- Botón para proceder al pago -->
-                            <button id="proceed-payment-button" class="btn btn-primary">Proceder al Pago</button>
+
                         </div>
+                            <!-- Botón para proceder al pago -->
+                            <button id="proceed-payment-button" class="btn btn-primary" onclick="proceedToSuccess()">Proceder al Pago</button>
+                     
                     {% else %}
                         <!-- Mensaje indicando que el total debe ser mayor que 0 -->
                         <p class="mt-3 text-danger">El total a pagar debe ser mayor que $0 para proceder con la compra.</p>
