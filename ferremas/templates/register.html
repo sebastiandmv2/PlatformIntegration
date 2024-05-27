@@ -1,14 +1,17 @@
+<!-- coni | copiar todo -->
+
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-1">
-    <div class="row justify-content-center">
-        <div class="col-md-3 d-flex align-items-start image-container2">
-            <img src="/static/Imagenes web/imagenRe.png" alt="imagenRe" class="img-fluid me-1" width="300" height="200">
+<div class="container mt-0">
+    <div class="row justify-content-center align-items-center" style="height: 80vh;">
 
+        <div class="col-md-3 d-flex align-items-center justify-content-center image-container2">
+            <img src="/static/Imagenes web/imagenRe.png" alt="imagenRe" class="img-fluid me-1" width="300" height="200">
         </div>
-        <div class="col-md-5">
-            <div class="card login-card">
+
+        <div class="col-md-5 d-flex justify-content-center align-items-center">
+            <div class="card register-card">
                 <div class="card-body">
                     <h2 class="card-title">Registro de Usuario</h2>
                     {% if message %}
@@ -41,6 +44,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-3 d-flex align-items-center justify-content-center image-container2">
+            <img src="/static/Imagenes web/imagenRe2.png" alt="imagenRe2" class="img-fluid me-1" width="300" height="200">
+        </div>
+
     </div>
 </div>
 {% endblock %}

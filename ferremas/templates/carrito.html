@@ -2,17 +2,24 @@
 
 {% block content %}
 
+<!-- coni | copiar esta sección -->
 <!-- Sección de Suscripción con imagen extendida -->
 <div class="row mb-5 position-relative">
-    <div class="col-8 p-0">
-        <img src="/static/Imagenes web/banner10.png" class="img-fluid mt-5" alt="Banner de suscripción">
+    <div class="col-12 p-0 d-flex justify-content-center">
+        <div class="overflow-hidden">
+            <img src="/static/Imagenes web/banner10.png" class="img-fluid mt-5" alt="Banner de suscripción" style="max-width: 100%; width: auto;">
+        </div>
         <div class="position-absolute bottom-0 start-50 translate-middle-x" style="margin-bottom: 10px;">
             <a href="/login" class="btn btn-primary btn-sm me-3">Iniciar sesión</a>
             <a href="/register" class="btn btn-secondary btn-sm">Registrarse</a>
         </div>
     </div>
-    
 </div>
+
+
+
+
+<!-- coni | copiar esta sección | aqui se agrega todo dentro de un card y se elimina el titulo -->
 <!-- Sección de Carrito de Compras -->
 <div class="row justify-content-center">
     <!-- Columna para Lista de Productos en el Carrito -->
@@ -44,6 +51,9 @@
             </div>
         </div>
     </div>
+
+
+
     <!-- Columna para Resumen del Pedido -->
     <div class="col-md-4">
         <div class="card">

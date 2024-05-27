@@ -14,10 +14,14 @@
 }
 
 /* Estilos para el contenido principal */
+/* Estilos para el contenido principal */
 .container {
-    padding-top: 20px; /* Espacio superior */
-    padding-bottom: 20px; /* Espacio inferior */
+    padding-top: 0; /* Espacio superior */
+    padding-bottom: 0; /* Espacio inferior */
+    padding-left: 0; /* Eliminar el margen izquierdo */
+    padding-right: 0; /* Eliminar el margen derecho */
 }
+
 
 .card {
     transition: transform 0.5s; /* Transición al pasar el cursor */
@@ -34,19 +38,18 @@
     color: #6c757d; /* Color del texto */
 }
 
-
 .logo-container {
     display: flex;
     align-items: center;
 }
 
 .logo {
-    max-width: 100px; /* Adjust the width as needed */
-    margin-right: 20px; /* Adjust the margin as needed */
+    max-width: 100px; /* Ajustar el ancho según sea necesario */
+    margin-right: 20px; /* Ajustar el margen según sea necesario */
 }
+
 .img-fluid {
-    max-width: 150%;
-    height: auto;
+    max-width: 200%;
 }
 
 .me-3 {
@@ -66,18 +69,18 @@
     margin-right: 20px; /* Ajustar el margen derecho para separar la imagen del contenido */
 }
 
-
 .login-card {
-    margin-top: 10%;
+    margin-top: -10%; /* Elevar la tarjeta de inicio de sesión */
 }
+
 
 .img-fluid-1 {
     max-width: 50%;
     height: auto;
 }
 
- /* CSS para hacer que la imagen ocupe toda la pantalla responsivamente */
- .fullscreen-img {
+/* CSS para hacer que la imagen ocupe toda la pantalla responsivamente */
+.fullscreen-img {
     width: 100%;
     height: auto;
     max-width: 100%;
@@ -87,4 +90,15 @@
 .btn {
     /* Asegurar que el botón sea siempre visible */
     z-index: 1;
+}
+
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1;
 }

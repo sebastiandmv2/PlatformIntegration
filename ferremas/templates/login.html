@@ -1,12 +1,16 @@
+<!-- coni | copiar todo -->
+
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-1">
-    <div class="row justify-content-center">
-        <div class="col-md-3 d-flex align-items-start image-container">
-            <img src="/static/Imagenes web/personaje.png" alt="Carrito" class="img-fluid me-3">
+<div class="container mt-0">
+    <div class="row justify-content-center align-items-center" style="height: 80vh;">
+
+        <div class="col-md-3 d-flex align-items-center justify-content-center image-container">
+            <img src="/static/Imagenes web/personaje.png" alt="personaje" class="img-fluid">
         </div>
-        <div class="col-md-5">
+
+        <div class="col-md-5 d-flex justify-content-center align-items-center">
             <div class="card login-card">
                 <div class="card-body">
                     <h2 class="card-title">Login</h2>
@@ -18,11 +22,11 @@
                     <form action="/login" method="POST">
                         <div class="form-group">
                             <label for="username">Username:</label>
-                            <input type="text" class="form-control" id="username" name="username">
+                            <input type="text" class="form-control" id="username" name="username" required>
                         </div>
                         <div class="form-group">
                             <label for="password">Password:</label>
-                            <input type="password" class="form-control" id="password" name="password">
+                            <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                         <div class="form-group text-right mt-3">
                             <button type="submit" class="btn btn-primary">Login</button>
@@ -36,6 +40,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-3 d-flex align-items-center justify-content-center image-container">
+            <img src="/static/Imagenes web/personaje2.png" alt="personaje2" class="img-fluid">
+        </div>
+
     </div>
 </div>
 {% endblock %}
