@@ -235,6 +235,10 @@ def create_checkout_session():
     except Exception as e:
         return jsonify(error=str(e)), 403
     
+@app.route('/error')
+def error():
+    return render_template('error.html')
+
     
 @app.route('/suscripcion_exitosa')
 def suscripcion_exitosa():

@@ -76,3 +76,15 @@
     height: auto;
 }
 
+ /* CSS para hacer que la imagen ocupe toda la pantalla responsivamente */
+ .fullscreen-img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100vh - 50px); /* Restar el tamaño del botón Volver al Inicio */
+}
+
+.btn {
+    /* Asegurar que el botón sea siempre visible */
+    z-index: 1;
+}
