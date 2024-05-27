@@ -6,10 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from utils import *
 
+from flask_mail import Mail, Message
+
 import stripe
+#from mailbox import Message
 
 # Configura tus claves de prueba de Stripe
 stripe.api_key = "sk_test_51PIEHJFngB2pMcgsTQQWyq4VWfSKzxgXHJHKjPGQiLehQyZ7EaPrHQqTBEFMjFpPcxn76UR5HRNeHwtAedsBDwKM00LGzeSh7D"
+
+
 
 
 # Lista para almacenar los productos en el carrito
@@ -17,6 +22,17 @@ carrito = []
 
 # Inicialización de la aplicación Flask
 app = Flask(__name__)
+
+#mail
+app.config['MAIL_SERVER'] = 'smtp.office365.com'  # Cambia esto por el servidor SMTP que uses
+app.config['MAIL_PORT'] = 587  # O 465 para SSL
+app.config['MAIL_USE_TLS'] = True  # O False si usas SSL
+app.config['MAIL_USE_SSL'] = False  # O True si usas SSL
+app.config['MAIL_USERNAME'] = os.environ.get('nico_3_9_@hotmail.com')
+app.config['MAIL_PASSWORD'] = os.environ.get('nico185698416')
+app.config['MAIL_DEFAULT_SENDER'] = 'nico_3_9_@hotmail.com'
+#instancia del mail
+mail = Mail(app)
 
 # Establece la clave secreta de la aplicación
 app.config['SECRET_KEY'] = 'a9a0f946b0e54dff85d1b7484c31b7d0'
@@ -205,6 +221,13 @@ def register():
         response = requests.post('http://localhost:5000/api/register', json={'username': username, 'password': password, 'email': email})
         
         if response.status_code == 201:
+            msg = Message('gracias por tu registro!' ,
+                          sender = 'n.ferramas@gmail.com',
+                          recipients = [email] )
+
+            msg.html = render_template('email.html' , user = username)
+            mail.send(msg)
+            
             # Si el usuario se crea con éxito, redirigir a la página de inicio de sesión
             return redirect(url_for('login'))
         else:
@@ -336,4 +359,5 @@ def suscripcion_exitosa():
 # Ejecutar la aplicación Flask
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
+    
 
