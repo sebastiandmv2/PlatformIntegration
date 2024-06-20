@@ -1,8 +1,10 @@
 import unittest
 from unittest.mock import patch
-from utils import obtener_valor_dolar
+from utils import obtener_valor_dolar, authenticate_user
 import pandas as pd
 from datetime import datetime, timedelta
+
+
 
 class TestUtils(unittest.TestCase):
 
@@ -88,6 +90,26 @@ class TestUtils(unittest.TestCase):
         valor_dolar = obtener_valor_dolar('fake_user', 'fake_password')
 
         self.assertEqual(valor_dolar, 760)
+
+
+
+
+
+
+
+
+
+
+class TestAuthUtils(unittest.TestCase):
+    
+    def test_authenticate_user_success(self):
+        # Prueba de autenticación exitosa
+        self.assertTrue(authenticate_user('user1', 'password1'))
+    
+    def test_authenticate_user_failure(self):
+        # Prueba de autenticación fallida
+        self.assertFalse(authenticate_user('user1', 'wrong_password'))
+        self.assertFalse(authenticate_user('unknown_user', 'password1'))
 
 if __name__ == '__main__':
     unittest.main()

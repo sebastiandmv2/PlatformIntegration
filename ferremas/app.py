@@ -408,3 +408,18 @@ def suscripcion_exitosa():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
 
+
+
+
+
+class Product:
+    def __init__(self, name, price):
+        if price < 0:
+            raise ValueError("Price cannot be negative")
+        self.name = name
+        self.price = price
+
+    def apply_discount(self, discount):
+        if not (0 <= discount <= 1):
+            raise ValueError("Discount must be between 0 and 1")
+        self.price *= (1 - discount)

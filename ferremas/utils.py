@@ -32,3 +32,14 @@ def obtener_valor_dolar(user, password):
         return observable_dollar_sorted.loc[latest_valid_dollar, 'dolar_day']
     else:
         return None
+
+
+
+def authenticate_user(username, password):
+    # Simulación de verificación contra una base de datos de usuarios
+    users_db = {
+        'user1': 'password1',
+        'user2': 'password2'
+    }
+    return users_db.get(username) == password
+
