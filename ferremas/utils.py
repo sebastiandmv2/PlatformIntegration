@@ -27,5 +27,8 @@ def obtener_valor_dolar(user, password):
     # Buscar el primer valor válido de 'dolar_day' hacia abajo en la lista ordenada de fechas
     latest_valid_dollar = next((date for date in observable_dollar_sorted.index if not pd.isna(observable_dollar_sorted.loc[date, 'dolar_day'])), None)
 
-    # Retornar el valor del dólar más reciente válido
-    return observable_dollar_sorted.loc[latest_valid_dollar, 'dolar_day']
+    # Retornar el valor del dólar más reciente válido si existe, sino retornar None
+    if latest_valid_dollar is not None:
+        return observable_dollar_sorted.loc[latest_valid_dollar, 'dolar_day']
+    else:
+        return None
