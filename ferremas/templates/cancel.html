@@ -1,17 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1 class="text-center">Pago Cancelado</h1>
-<hr>
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body text-center">
-                <h3 class="card-title">El proceso de pago ha sido cancelado.</h3>
-                <p class="card-text">Por favor, inténtelo de nuevo más tarde.</p>
-                <a href="/carrito" class="btn btn-primary">Volver al Carrito</a>
-            </div>
-        </div>
-    </div>
+
+<div class="position-relative">
+    <img src="/static/Imagenes web/cancelado.png" class="img-fluid mb-4" alt="Pago Cancelado" style="width: 100%; margin-top: 100px;">
+    <a href="/carrito" class="btn btn-primary btn-m position-absolute start-50 translate-middle-x" style="bottom: 50px;">Volver al Carrito</a>
 </div>
+
 {% endblock %}

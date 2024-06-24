@@ -1,6 +1,6 @@
 /* Estilos para el navbar */
 .navbar {
-    background-color: #f8f9fa; /* Color de fondo del navbar */
+    background-color: #f8fafa; /* Color de fondo del navbar */
     border-bottom: 1px solid #e9ecef; /* Borde inferior */
 }
 
@@ -14,13 +14,17 @@
 }
 
 /* Estilos para el contenido principal */
+/* Estilos para el contenido principal */
 .container {
-    padding-top: 20px; /* Espacio superior */
-    padding-bottom: 20px; /* Espacio inferior */
+    padding-top: 0; /* Espacio superior */
+    padding-bottom: 0; /* Espacio inferior */
+    padding-left: 0; /* Eliminar el margen izquierdo */
+    padding-right: 0; /* Eliminar el margen derecho */
 }
 
+
 .card {
-    transition: transform 0.2s; /* Transición al pasar el cursor */
+    transition: transform 0.5s; /* Transición al pasar el cursor */
 }
 
 .card:hover {
@@ -32,4 +36,69 @@
     background-color: #f8f9fa; /* Color de fondo */
     border-top: 1px solid #e9ecef; /* Borde superior */
     color: #6c757d; /* Color del texto */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100px; /* Ajustar el ancho según sea necesario */
+    margin-right: 20px; /* Ajustar el margen según sea necesario */
+}
+
+.img-fluid {
+    max-width: 200%;
+}
+
+.me-3 {
+    margin-right: 2%; /* Espaciado entre la imagen y la tarjeta */
+}
+
+.d-flex {
+    display: flex;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+/* Añadir estilos para la imagen */
+.image-container {
+    margin-right: 20px; /* Ajustar el margen derecho para separar la imagen del contenido */
+}
+
+.login-card {
+    margin-top: -10%; /* Elevar la tarjeta de inicio de sesión */
+}
+
+
+.img-fluid-1 {
+    max-width: 50%;
+    height: auto;
+}
+
+/* CSS para hacer que la imagen ocupe toda la pantalla responsivamente */
+.fullscreen-img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: calc(100vh - 50px); /* Restar el tamaño del botón Volver al Inicio */
+}
+
+.btn {
+    /* Asegurar que el botón sea siempre visible */
+    z-index: 1;
+}
+
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1;
 }

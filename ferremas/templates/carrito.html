@@ -18,34 +18,36 @@
     </div>
 </div>
 
-<h1>Carrito de Compras</h1>
-<hr>
-<div class="row">
+<!-- Sección de Carrito de Compras -->
+<div class="row justify-content-center">
+    <!-- Columna para Lista de Productos en el Carrito -->
     <div class="col-md-8">
-        <h3>Productos en el carrito:</h3>
-        <ul class="list-group">
-            {% for product in products %}
-            <li class="list-group-item">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h5>{{ product['name'] }}</h5>
-                        <p>{{ product['description'] }}</p>
-                        <!-- Mostrar el precio total del producto por las unidades en CLP -->
-                        <p>Total (CLP): ${{ product['price'] | float * product['quantity'] }}</p>
-                        <!-- Mostrar el precio total del producto por las unidades en USD -->
-                        <p>Total (USD): ${{ product['price_usd'] | float * product['quantity'] }}</p>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">Unidades:</span>
-                            <input type="number" class="form-control" value="{{ product['quantity'] }}" id="quantity_{{ product['id'] }}" min="1" onchange="updateQuantity('{{ product['id'] }}', this.value)">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h3 class="card-title mb-4">Productos en el Carrito:</h3>
+                <ul class="list-group">
+                    {% for product in products %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5>{{ product['name'] }}</h5>
+                                <p>{{ product['description'] }}</p>
+                                <p>Total (CLP): ${{ product['price'] | float * product['quantity'] }}</p>
+                                <p>Total (USD): ${{ product['price_usd'] | float * product['quantity'] }}</p>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Unidades:</span>
+                                    <input type="number" class="form-control" value="{{ product['quantity'] }}" id="quantity_{{ product['id'] }}" min="1" onchange="updateQuantity('{{ product['id'] }}', this.value)">
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-danger" onclick="removeFromCart('{{ product['id'] }}')">Eliminar</button>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <button class="btn btn-danger" onclick="removeFromCart('{{ product['id'] }}')">Eliminar</button>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
         <h3>Resumen del Pedido:</h3>

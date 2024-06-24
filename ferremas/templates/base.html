@@ -1,4 +1,3 @@
-<!-- base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +9,12 @@
     <script src="{{ url_for('static', filename='modal.js') }}"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="static/stripe.js" defer></script>
+
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
+            <img src="/static/Imagenes web/isotipo.png" alt="Carrito" width="25" height="25" class="me-1">
             <a class="navbar-brand" href="#">Ferremas</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -41,17 +41,14 @@
                     <a class="nav-link ms-2" href="/login">Iniciar sesión</a> <!-- Agregué la clase "ms-2" aquí -->
                 {% endif %}
                 <a class="nav-link ms-2" href="/carrito">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                        <path d="M0 0h1v1H0V0zm15 1h1v1h-1V1zM3.88 2 4.12.34a.5.5 0 0 1 .96 0L5.88 2H14.5a.5.5 0 0 1 0 1H5.25l-.41 1.71a.5.5 0 0 1-.48.39H3v1h1.25a.5.5 0 0 1 .48.39l1 4A.5.5 0 0 1 6.21 12h6.58a.5.5 0 0 1 .48.41l1 4a.5.5 0 0 1-.14.49.5.5 0 0 1-.36.16H2a.5.5 0 0 1-.5-.5.5.5 0 0 1 .14-.35l10-10a.5.5 0 0 1 .74.68L3.88 11H12V9H3.87l-.81-3.25L2 5V4h1.12L3.88 2zM5.25 3h8.13l-1.25 5H4L5.25 3zM4.5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm7 1a 1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                    </svg>
-                    Carrito
+                    <img src="/static/Imagenes web/carrito.png" alt="Carrito" width="25" height="25" class="me-1">
                 </a>
             </div>
         </div>
     </nav>
-    
+
     <!-- Content block -->
-    <div class="container mt-4">
+    <div class="container mt-4 content">
         {% block content %}
         {% endblock %}
     </div>
@@ -64,6 +61,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-
 </body>
 </html>
